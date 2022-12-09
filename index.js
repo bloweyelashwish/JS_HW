@@ -1,114 +1,132 @@
-1;
+// 1
 
-for (let i = 1; i <= 10; i++) {
-  if (i % 2 === 0) {
-    console.log('index: ', i, 'Fiz');
-  } else if (i % 3 === 0) {
-    console.log('index: ', i, 'FizBuz');
-  } else {
-    console.log('index: ', i, 'Buz');
-  }
-}
+const logCityAndCountry = (object) => {
+  const result = [];
 
-2;
-
-const factorial = (num) => {
-  if (num === 0) return 0;
-
-  let result = 1;
-
-  for (let i = num; i > 0; i--) {
-    result *= i;
+  for (const [key, val] of Object.entries(object)) {
+    result.push(`${key} - is ${val}`);
   }
 
   return result;
 };
 
-console.log('factorial: ', factorial(10));
-
-3;
-
-const calculatePaperStackNum = (
-  sheetsInStack,
-  weeklyConsumption,
-  weekCount
-) => {
-  const consumptionPerWeeks = weekCount * weeklyConsumption;
-  let requiredNumOfStacks = consumptionPerWeeks / sheetsInStack;
-
-  if (requiredNumOfStacks % 1 !== 0) {
-    requiredNumOfStacks = (requiredNumOfStacks >> 0) + 1;
-  }
-
-  return requiredNumOfStacks;
+const citiesAndCountries = {
+  Киев: 'Украина',
+  'Нью-Йорк': 'США',
+  Амстердам: 'Нидерланды',
+  Берлин: 'Германия',
+  Париж: 'Франция',
+  Лиссабон: 'Португалия',
+  Вена: 'Австрия',
 };
 
-const sheetsInReamPaper = 500;
-const consumptionPerWeek = 1200;
-const weeksAmount = 8;
+console.log('log city and country: ', logCityAndCountry(citiesAndCountries));
 
-console.log(
-  'required paper stack num: ',
-  calculatePaperStackNum(sheetsInReamPaper, consumptionPerWeek, weeksAmount)
-);
+// 2
 
-4;
+const getArray = (amount) => {
+  const DELIMETER = 3;
 
-function locateRoom(room, roomsOnFloor, floors) {
-  const roomsPerPorch = floors * roomsOnFloor;
+  if (amount % DELIMETER !== 0)
+    throw new Error('Amount must be a multiple of 3');
 
-  const start = room - 1;
-  const porch = (start / roomsPerPorch + 1) << 0;
-  const floor = ((start - (porch - 1) * roomsPerPorch) / roomsOnFloor + 1) << 0;
+  const result = [];
+  let arr = [];
 
-  return { porch, floor };
-}
+  for (const i = 1; i <= amount; i++) {
+    arr.push(i);
 
-const roomsOnFloor = 3;
-const floors = 9;
-const roomNumber = 456;
+    if (i % DELIMETER === 0) {
+      result.push(arr);
+      arr = [];
+    }
+  }
 
-console.log(
-  "room's porch and floor: ",
-  locateRoom(roomNumber, roomsOnFloor, floors)
-);
+  return result;
+};
+
+console.log('print array of arrays with a given amount: ', getArray(12));
+
+// 3
+
+const getNameOfDay = (lang, day) => {
+  const namesOfDays = {
+    ru: [
+      'Понедельник',
+      'Вторник',
+      'Среда',
+      'Четверг',
+      'Пятница',
+      'Суббота',
+      'Воскресенье',
+    ],
+    en: [
+      'Monday',
+      'Tuesday',
+      'Wednesday',
+      'Thursday',
+      'Friday',
+      'Saturday',
+      'Sunday',
+    ],
+  };
+
+  if (!namesOfDays[lang])
+    throw new Error(
+      `Given language is not provided: ${lang}. Possible values are: ru, en`
+    );
+
+  return namesOfDays[lang][day - 1];
+};
+
+console.log('get name of day in given language:', getNameOfDay('en', 3));
+
+// 4
+
+const sumOfTwoLowestNums = (arr) => {
+  // SOLUTION: 1
+  // const [num1, num2] = arr.sort((a, b) => a - b);
+  // return num1 + num2;
+
+  // SOLUTION 2
+  let min1 = Infinity;
+  let min2 = Infinity;
+
+  for (let i = 0; i < arr.length; i++) {
+    const num = arr[i];
+
+    if (arr[i] < min1) {
+      min2 = min1;
+      min1 = num;
+    } else if (num < min2) {
+      min2 = num;
+    }
+  }
+
+  const sum = min1 + min2;
+
+  return `Lowest possible sum of [${arr}]: ${sum}`;
+};
+
+console.log(sumOfTwoLowestNums([10, 800, 3453000, 8010]));
+
+console.log(sumOfTwoLowestNums([12, 898, 899, 900]));
 
 // 5
 
-const pyramid = (medianNumber) => {
-  let resultingString = '';
+// Дан массив единиц и нулей, преобразуйте эквивалентное двоичное значение в целое число.
+// Например: [0, 0, 0, 1] рассматривается как 0001 двоичное представление 1.
+// Testing: [0, 0, 0, 1] ==> 1
+// Testing: [0, 0, 1, 0] ==> 2
+// Testing: [0, 1, 0, 1] ==> 5
+// Testing: [1, 0, 0, 1] ==> 9
+// Testing: [0, 0, 1, 0] ==> 2
+// Testing: [0, 1, 1, 0] ==> 6
+// Testing: [1, 1, 1, 1] ==> 15
+// Testing: [1, 0, 1, 1] ==> 11
+// Testing: [1, 0, 0, 0, 1] ==> 17
+// Testing: [1, 0, 0, 1, 0] ==> 18
+// Testing: [1, 0, 1, 0, 1] ==> 21
+// Testing: [1, 1, 1, 0, 0, 1] ==> 57
 
-  for (let row = 1; row <= medianNumber; row++) {
-    for (let spaceLeft = row; spaceLeft < medianNumber; spaceLeft++) {
-      resultingString += '-';
-    }
-
-    for (
-      let buildingBlockLeft = 1;
-      buildingBlockLeft <= row;
-      buildingBlockLeft++
-    ) {
-      resultingString += '#';
-    }
-
-    for (
-      let buildingBlockRight = 1;
-      buildingBlockRight < row;
-      buildingBlockRight++
-    ) {
-      resultingString += '#';
-    }
-
-    for (let spaceRight = medianNumber; spaceRight > row; spaceRight--) {
-      resultingString += '-';
-    }
-
-    resultingString += '\n';
-  }
-
-  console.log('pyramid from median', medianNumber);
-  return resultingString;
-};
-
-console.log(pyramid(6));
-console.log(pyramid(8));
+const sumOfBinary = (arr) => {};
