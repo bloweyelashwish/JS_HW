@@ -33,7 +33,7 @@ const getArray = (amount) => {
   const result = [];
   let arr = [];
 
-  for (const i = 1; i <= amount; i++) {
+  for (let i = 1; i <= amount; i++) {
     arr.push(i);
 
     if (i % DELIMETER === 0) {
@@ -115,18 +115,23 @@ console.log(sumOfTwoLowestNums([12, 898, 899, 900]));
 // 5
 
 // Дан массив единиц и нулей, преобразуйте эквивалентное двоичное значение в целое число.
-// Например: [0, 0, 0, 1] рассматривается как 0001 двоичное представление 1.
-// Testing: [0, 0, 0, 1] ==> 1
-// Testing: [0, 0, 1, 0] ==> 2
-// Testing: [0, 1, 0, 1] ==> 5
-// Testing: [1, 0, 0, 1] ==> 9
-// Testing: [0, 0, 1, 0] ==> 2
-// Testing: [0, 1, 1, 0] ==> 6
-// Testing: [1, 1, 1, 1] ==> 15
-// Testing: [1, 0, 1, 1] ==> 11
-// Testing: [1, 0, 0, 0, 1] ==> 17
-// Testing: [1, 0, 0, 1, 0] ==> 18
-// Testing: [1, 0, 1, 0, 1] ==> 21
-// Testing: [1, 1, 1, 0, 0, 1] ==> 57
 
-const sumOfBinary = (arr) => {};
+const sumOfBinary = (arr) => {
+  let res = 0;
+
+  for (let i = 0; i < arr.length; i++) {
+    res *= 2;
+    res += arr[i];
+  }
+
+  return res;
+};
+
+console.log(sumOfBinary([0, 0, 0, 1]));
+console.log(sumOfBinary([0, 0, 1, 0]));
+console.log(sumOfBinary([1, 0, 0, 1]));
+console.log(sumOfBinary([0, 1, 1, 0]));
+console.log(sumOfBinary([1, 1, 1, 1]));
+console.log(sumOfBinary([1, 0, 1, 1]));
+console.log(sumOfBinary([1, 0, 1, 0, 1]));
+console.log(sumOfBinary([1, 1, 1, 0, 0, 1]));
