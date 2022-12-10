@@ -55,6 +55,10 @@ console.log(
 4;
 
 function locateRoom(room, roomsOnFloor, floors) {
+  if (room < 100) {
+    throw new Error('Number must contain three digits.');
+  }
+
   const roomsPerPorch = floors * roomsOnFloor;
 
   const start = room - 1;
