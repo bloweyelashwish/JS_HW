@@ -1,118 +1,103 @@
-1;
+import { employees } from './employees.js';
 
-for (let i = 1; i <= 10; i++) {
-  if (i % 2 === 0) {
-    console.log('index: ', i, 'Fiz');
-  } else if (i % 3 === 0) {
-    console.log('index: ', i, 'FizBuz');
-  } else {
-    console.log('index: ', i, 'Buz');
-  }
+// 1
+
+function Employee({
+  id,
+  name,
+  surname,
+  salary,
+  workExperience,
+  isPrivileges,
+  gender,
+}) {
+  this.id = id;
+  this.name = name;
+  this.surname = surname;
+  this.salary = salary;
+  this.workExperience = workExperience;
+  this.isPrivileges = isPrivileges;
+  this.gender = gender;
+
+  Object.defineProperties(this, {
+    fullInfo: {
+      get: function () {
+        let res = new String();
+        const propsLength = Object.keys(this).length - 1;
+
+        Object.entries(this).forEach(([k, v], i) => {
+          res += `${k} - ${v}, `;
+
+          if (i === propsLength) {
+            res += `${k} - ${v}.`;
+          }
+        });
+
+        return res;
+      },
+
+      set: function (v) {
+        Object.keys(this).forEach((k) => {
+          this[k] = v[k] ? v[k] : this[k];
+        });
+
+        return this;
+      },
+    },
+  });
 }
 
-2;
+// 2
 
-const factorial = (num) => {
-  if (num === 0) return 0;
-
-  let result = 1;
-
-  for (let i = num; i > 0; i--) {
-    result *= i;
-  }
-
-  return result;
+Employee.prototype.getFullName = function () {
+  return `${this.name} ${this.surname}`;
 };
 
-console.log('factorial: ', factorial(10));
-
-3;
-
-const calculatePaperStackNum = (
-  sheetsInStack,
-  weeklyConsumption,
-  weekCount
-) => {
-  const consumptionPerWeeks = weekCount * weeklyConsumption;
-  let requiredNumOfStacks = consumptionPerWeeks / sheetsInStack;
-
-  if (requiredNumOfStacks % 1 !== 0) {
-    requiredNumOfStacks = (requiredNumOfStacks >> 0) + 1;
-  }
-
-  return requiredNumOfStacks;
+const employee = {
+  id: 2,
+  name: 'Valeriy',
+  surname: 'Zhmishenko',
+  salary: 1000,
+  workExperience: 10,
+  isPrivileges: true,
+  gender: 'male',
 };
 
-const sheetsInReamPaper = 500;
-const consumptionPerWeek = 1200;
-const weeksAmount = 8;
+const employeeObj = new Employee(employees[0]);
+console.log(employeeObj);
+console.log(employeeObj.getFullName());
 
-console.log(
-  'required paper stack num: ',
-  calculatePaperStackNum(sheetsInReamPaper, consumptionPerWeek, weeksAmount)
-);
+// 3
 
-4;
+const employeesFromArray = (arr) => arr.map((item) => new Employee(item));
+const employeeConstructArr = employeesFromArray(employees);
+console.log(employeeConstructArr);
 
-function locateRoom(room, roomsOnFloor, floors) {
-  if (room < 100) {
-    throw new Error('Number must contain three digits.');
-  }
+// 4
 
-  const roomsPerPorch = floors * roomsOnFloor;
-
-  const start = room - 1;
-  const porch = (start / roomsPerPorch + 1) << 0;
-  const floor = ((start - (porch - 1) * roomsPerPorch) / roomsOnFloor + 1) << 0;
-
-  return { porch, floor };
-}
-
-const roomsOnFloor = 3;
-const floors = 9;
-const roomNumber = 456;
-
-console.log(
-  "room's porch and floor: ",
-  locateRoom(roomNumber, roomsOnFloor, floors)
-);
+const getFullNamesFromArr = (arr) => arr.map((item) => item.getFullName());
+const arrOfFullNames = getFullNamesFromArr(employeeConstructArr);
+console.log(arrOfFullNames);
 
 // 5
 
-const pyramid = (medianNumber) => {
-  let resultingString = '';
+const getAverageSalary = (arr) =>
+  parseInt(arr.reduce((prev, curr) => prev + curr.salary, 0) / arr.length);
 
-  for (let row = 1; row <= medianNumber; row++) {
-    for (let spaceLeft = row; spaceLeft < medianNumber; spaceLeft++) {
-      resultingString += '-';
-    }
+const averageSalary = getAverageSalary(employeeConstructArr);
+console.log(averageSalary);
 
-    for (
-      let buildingBlockLeft = 1;
-      buildingBlockLeft <= row;
-      buildingBlockLeft++
-    ) {
-      resultingString += '#';
-    }
+// 6
 
-    for (
-      let buildingBlockRight = 1;
-      buildingBlockRight < row;
-      buildingBlockRight++
-    ) {
-      resultingString += '#';
-    }
+const getRandomEmployee = (arr) => arr[(Math.random() * arr.length) | 0];
 
-    for (let spaceRight = medianNumber; spaceRight > row; spaceRight--) {
-      resultingString += '-';
-    }
+const randomEmployee = getRandomEmployee(employeeConstructArr);
+console.log(randomEmployee);
 
-    resultingString += '\n';
-  }
+// 7
 
-  console.log('pyramid from median', medianNumber);
-  return resultingString;
-};
+const info = employeeObj.fullInfo;
+console.log(info);
 
-console.log(pyramid(6));
-console.log(pyramid(8));
+employeeObj.fullInfo = { name: 'Вася', salary: 9000 };
+console.log(employeeObj);
