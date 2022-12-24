@@ -53,16 +53,6 @@ Employee.prototype.getFullName = function () {
   return `${this.name} ${this.surname}`;
 };
 
-const employee = {
-  id: 2,
-  name: 'Valeriy',
-  surname: 'Zhmishenko',
-  salary: 1000,
-  workExperience: 10,
-  isPrivileges: true,
-  gender: 'male',
-};
-
 const employeeObj = new Employee(employees[0]);
 console.log(employeeObj);
 console.log(employeeObj.getFullName());
