@@ -1,4 +1,4 @@
-const studentArr = [{
+export const arrayOfStudents = [{
   name: 'Сергей',
   surname: 'Войлов',
   ratingPoint: 1000,
