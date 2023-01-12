@@ -1,7 +1,3 @@
-import { candidates } from './candidates';
-
-console.log(candidates);
-
 // 1
 function removeUserByIdx(arr, idx) {
   return arr.splice(idx, 1);
@@ -25,3 +21,76 @@ const person = { name: 'Vasya', age: 1 };
 // console.log(getAllValues(person));
 
 // 4
+function insertIntoArray(arr, obj, id) {
+  const requestedObj = arr.find((obj) => obj.id ?? obj._id === id);
+  const idxOfRequestObj = arr.indexOf(requestedObj);
+
+  return [...arr.slice(0, idxOfRequestObj), obj, ...arr.slice(idxOfRequestObj)];
+}
+
+const obj = {
+  id: 3,
+  name: 'Vasya'
+}
+
+const secondObj = {
+  id: 4,
+  name: 'Katya'
+}
+
+// const updatedArr = insertIntoArray(candidates, obj, '5e216bc9f51c08c39c3ed006');
+// console.log(insertIntoArray(updatedArr, secondObj, '5e216bc9a6059760578aefa4'));
+
+// 5
+class Candidate {
+  constructor(person) {
+      this.state = this.getState(person.address);
+  }
+
+  getState(address) {
+    return address.split(', ')[2];
+  }
+}
+
+const candidate = new Candidate(candidates[0]);
+console.log(candidate.state);
+
+// 6
+
+function getCompanyNames(candidates) {
+  const companiesArr = candidates.map((candidate) => candidate.company);
+
+  return [...new Set(companiesArr)];
+}
+
+const companyNames = getCompanyNames(candidates);
+
+// 7
+function getUsersByYear(users, year) {
+  const registeredDate = (string) => string.split('-')[0];
+
+  return users.filter((user) => registeredDate(user.registered) === year.toString());
+}
+
+const usersByYear = getUsersByYear(candidates, 2017);
+// console.log(usersByYear);
+
+// 8
+function getCandidatesByUnreadMsgs(candidates, msgsCount) {
+  const numFromString = (string) => string.replace(/\D/g,'');
+
+  return candidates.filter((candidate) => numFromString(candidate.greeting) === msgsCount.toString());
+}
+
+const candidatesWithUndreadMsgs = getCandidatesByUnreadMsgs(candidates, 8);
+// console.log(candidatesWithUndreadMsgs);
+
+// 9
+function getCandidatesByGender(candidates, gender) {
+  return candidates.filter((candidate) => candidate.gender === gender);
+}
+
+const maleCandidates = getCandidatesByGender(candidates, 'male');
+// console.log(maleCandidates);
+
+// TODO: 10 -> own reduce, join
