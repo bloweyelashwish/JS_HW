@@ -1,118 +1,94 @@
-1;
+// 1
+const counterClosure = () => {
+  let initialValue = 0;
 
-for (let i = 1; i <= 10; i++) {
-  if (i % 2 === 0) {
-    console.log('index: ', i, 'Fiz');
-  } else if (i % 3 === 0) {
-    console.log('index: ', i, 'FizBuz');
-  } else {
-    console.log('index: ', i, 'Buz');
+  return (arg) => {
+    initialValue += arg;
+    return initialValue;
+  };
+}
+
+const counter = counterClosure();
+// console.log(counter(3));
+// console.log(counter(5));
+// console.log(counter(10));
+
+
+// 2
+
+function updateArray() {
+  let arr = [];
+
+  return (arg) => {
+    if (!arg) {
+      arr = [];
+      return arr;
+    }
+
+    arr.push(arg);
+    return arr;
   }
 }
 
-2;
+const getUpdatedArr = updateArray();
+// console.log(getUpdatedArr(3));
+// console.log(getUpdatedArr(5));
+// console.log(getUpdatedArr({name: 'Vasya'}));
+// console.log(getUpdatedArr());
+// console.log(getUpdatedArr(4));
 
-const factorial = (num) => {
-  if (num === 0) return 0;
+// 3
 
-  let result = 1;
+const timerClosure = () => {
+  let lastDate = null;
 
-  for (let i = num; i > 0; i--) {
-    result *= i;
-  }
+  return () => {
+    if (!lastDate) {
+      lastDate = new Date();
+      return 'Enabled';
+    }
 
-  return result;
-};
+    const now = new Date();
+    const difference = Math.round((now - lastDate) / 1000);
+    lastDate = now;
 
-console.log('factorial: ', factorial(10));
-
-3;
-
-const calculatePaperStackNum = (
-  sheetsInStack,
-  weeklyConsumption,
-  weekCount
-) => {
-  const consumptionPerWeeks = weekCount * weeklyConsumption;
-  let requiredNumOfStacks = consumptionPerWeeks / sheetsInStack;
-
-  if (requiredNumOfStacks % 1 !== 0) {
-    requiredNumOfStacks = (requiredNumOfStacks >> 0) + 1;
-  }
-
-  return requiredNumOfStacks;
-};
-
-const sheetsInReamPaper = 500;
-const consumptionPerWeek = 1200;
-const weeksAmount = 8;
-
-console.log(
-  'required paper stack num: ',
-  calculatePaperStackNum(sheetsInReamPaper, consumptionPerWeek, weeksAmount)
-);
-
-4;
-
-function locateRoom(room, roomsOnFloor, floors) {
-  if (room < 100) {
-    throw new Error('Number must contain three digits.');
-  }
-
-  const roomsPerPorch = floors * roomsOnFloor;
-
-  const start = room - 1;
-  const porch = (start / roomsPerPorch + 1) << 0;
-  const floor = ((start - (porch - 1) * roomsPerPorch) / roomsOnFloor + 1) << 0;
-
-  return { porch, floor };
+    return difference;
+  };
 }
 
-const roomsOnFloor = 3;
-const floors = 9;
-const roomNumber = 456;
+const getTime = timerClosure();
 
-console.log(
-  "room's porch and floor: ",
-  locateRoom(roomNumber, roomsOnFloor, floors)
-);
+// for (let i = 1; i <= 10; i++) {
+//   setTimeout(() => console.log(getTime()), i * 1000);
+// }
 
-// 5
+// 4
 
-const pyramid = (medianNumber) => {
-  let resultingString = '';
+function padString(value) {
+  return value.toString().padStart(2, '0');
+}
 
-  for (let row = 1; row <= medianNumber; row++) {
-    for (let spaceLeft = row; spaceLeft < medianNumber; spaceLeft++) {
-      resultingString += '-';
+const timeConverter = (seconds) => {
+  const MM = Math.floor(seconds / 60);
+  const SS = seconds % 60;
+
+  return `${padString(MM)}:${padString(SS)}`;
+}
+
+const timer = (seconds) => {
+  let countdownTime = seconds;
+
+  const tick = setInterval(() => {
+    if (countdownTime > 0) {
+      console.log(timeConverter(countdownTime));
+      countdownTime--;
+    } else {
+      clearInterval(tick);
+      console.log('Finished');
     }
+  }, 1000);
+}
 
-    for (
-      let buildingBlockLeft = 1;
-      buildingBlockLeft <= row;
-      buildingBlockLeft++
-    ) {
-      resultingString += '#';
-    }
+timer(15);
 
-    for (
-      let buildingBlockRight = 1;
-      buildingBlockRight < row;
-      buildingBlockRight++
-    ) {
-      resultingString += '#';
-    }
 
-    for (let spaceRight = medianNumber; spaceRight > row; spaceRight--) {
-      resultingString += '-';
-    }
-
-    resultingString += '\n';
-  }
-
-  console.log('pyramid from median', medianNumber);
-  return resultingString;
-};
-
-console.log(pyramid(6));
-console.log(pyramid(8));
