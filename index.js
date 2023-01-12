@@ -4,8 +4,11 @@ import { arrayOfStudents } from './students.js';
 
 class Student {
   static id = 0;
-  static listOfStudents = [];
-  static studentsOnBudget = [];
+  static requiredPointsForBudget = 800;
+  static maxBudgetPlaces = 5;
+
+  static listOfEnrollees = [];
+  static listOnBudget = [];
 
   constructor(enrollee) {
     this.id = Student.id++;
@@ -13,38 +16,39 @@ class Student {
     this.surname = enrollee.surname;
     this.ratingPoint = enrollee.ratingPoint;
     this.schoolPoint = enrollee.schoolPoint;
-    this.addStudent(enrollee);
-    this.isSelfPayment = this.checkIfSelfPayment(enrollee);
+    this.isSelfPayment = true;
+    this.addStudent();
+    this.checkIfEligibleForBudget();
   }
 
-  addStudent(enrollee) {
-    Student.listOfStudents.push(enrollee);
+  addStudent() {
+    Student.listOfEnrollees.push(this);
   }
 
-  checkIfSelfPayment(enrollee) {
-    const listOfRatingPoints = Student.listOfStudents.map(
-      (student) => student.ratingPoint
-    );
+  checkIfOnBudget() {
+    const topEnrollees = [...Student.listOnBudget]
+      .sort((a, b) => b.ratingPoint - a.ratingPoint)
+      .splice(0, Student.maxBudgetPlaces);
 
-    const isEligible =
-      enrollee.ratingPoint >= 800 &&
-      Math.min(...listOfRatingPoints) !== enrollee.ratingPoint &&
-      Math.min(...Student.studentsOnBudget) <= enrollee.ratingPoint &&
-      Student.studentsOnBudget.length !== 5;
-
-    if (isEligible) {
-      Student.studentsOnBudget.push(enrollee);
-      console.log(Student.studentsOnBudget);
-
-      return false;
+    if (topEnrollees.includes(this)) {
+      this.isSelfPayment = false;
     }
+  }
 
-    return true;
+  checkIfEligibleForBudget() {
+    const isPotentiallyLegible = this.ratingPoint >= Student.requiredPointsForBudget;
+
+    if (isPotentiallyLegible) {
+      Student.listOnBudget.push(this);
+      this.checkIfOnBudget();
+    } else {
+      this.isSelfPayment = true;
+    }
   }
 }
 
 const studentsList = arrayOfStudents.map((student) => new Student(student));
-// console.log(studentsList);
+console.log(studentsList);
 
 // 2
 
