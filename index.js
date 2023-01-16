@@ -82,8 +82,8 @@ function getCandidatesByUnreadMsgs(candidates, msgsCount) {
   return candidates.filter((candidate) => numFromString(candidate.greeting) === msgsCount.toString());
 }
 
-const candidatesWithUndreadMsgs = getCandidatesByUnreadMsgs(candidates, 8);
-// console.log(candidatesWithUndreadMsgs);
+const candidatesWithUnreadMsgs = getCandidatesByUnreadMsgs(candidates, 8);
+// console.log(candidatesWithUnreadMsgs);
 
 // 9
 function getCandidatesByGender(candidates, gender) {
@@ -93,4 +93,22 @@ function getCandidatesByGender(candidates, gender) {
 const maleCandidates = getCandidatesByGender(candidates, 'male');
 // console.log(maleCandidates);
 
-// TODO: 10 -> own reduce, join
+// 10
+function reduce(callback, initialValue) {
+  let accumulator = initialValue ? initialValue : this[0];
+  let start = initialValue ? 0 : 1;
+
+  for (; start < this.length; start++) {
+    accumulator = callback(accumulator, this[start]);
+  }
+
+  return accumulator;
+}
+
+Array.prototype._reducer = reduce;
+
+const test = [1, 2, 3];
+const res = test._reducer((sum, curr) => sum + curr, 2000);
+// console.log(res);
+
+// 11
