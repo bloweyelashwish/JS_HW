@@ -69,11 +69,11 @@ const companyNames = getCompanyNames(candidates);
 function getUsersByYear(users, year) {
   const registeredDate = (string) => string.split('-')[0];
 
-  return users.filter((user) => registeredDate(user.registered) === year.toString());
+  return users.filter((user) => registeredDate(user.registered) === year.toString()).map(user => user._id);
 }
 
 const usersByYear = getUsersByYear(candidates, 2017);
-// console.log(usersByYear);
+console.log(usersByYear);
 
 // 8
 function getCandidatesByUnreadMsgs(candidates, msgsCount) {
