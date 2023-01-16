@@ -112,3 +112,22 @@ const res = test._reducer((sum, curr) => sum + curr, 2000);
 // console.log(res);
 
 // 11
+
+function join(separator) {
+  let result = '';
+
+  for (let i = 0; i < this.length; i++) {
+    result += this[i];
+
+    if (i !== this.length - 1) {
+      result += separator;
+    }
+  }
+
+  return result;
+}
+
+Array.prototype._joiner = join;
+
+const testJoin = ['Test', 'String', 'There'].join('!');
+console.log(testJoin);
