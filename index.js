@@ -130,4 +130,4 @@ function join(separator) {
 Array.prototype._joiner = join;
 
 const testJoin = ['Test', 'String', 'There']._joiner('!');
-console.log(testJoin);
+// console.log(testJoin);
